@@ -17,6 +17,9 @@ TARGET_ARCH_VARIANT_FPU         := vfp
 endif
 ifeq ($(strip $(TARGET_ARCH_VARIANT_CPU)),)
 TARGET_ARCH_VARIANT_CPU         := arm1136jf-s
+elif  ($(strip $(TARGET_ARCH_VARIANT_CPU)),arm1176jzf-s)
+ARCH_ARM_HAVE_THUMB_SUPPORT     := false
+ARCH_ARM_HAVE_FAST_INTERWORKING := false
 endif
 
 # Note: Hard coding the 'tune' value here is probably not ideal,
@@ -30,4 +33,12 @@ arch_variant_cflags := \
     -D__ARM_ARCH_5T__ \
     -D__ARM_ARCH_5E__ \
     -D__ARM_ARCH_5TE__
+
+arch_variant_cflags += \
+	-mtune=$(TARGET_ARCH_VARIANT_CPU) \
+	-msoft-float \
+    -D__ARM_ARCH_5__ \
+    -D__ARM_ARCH_6__ \
+    -D__ARM_ARCH_6J__ \
+
 

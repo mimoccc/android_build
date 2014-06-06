@@ -70,14 +70,19 @@ TARGET_NO_UNDEFINED_LDFLAGS := -Wl,--no-undefined
 
 TARGET_arm_CFLAGS :=    -O2 \
                         -fomit-frame-pointer \
-                        -fstrict-aliasing    \
+                        -fno-strict-aliasing    \
                         -funswitch-loops
 
 # Modules can choose to compile some source as thumb.
+ifeq ($(ARCH_ARM_HAVE_THUMB_SUPPORT),true)
 TARGET_thumb_CFLAGS :=  -mthumb \
                         -Os \
                         -fomit-frame-pointer \
                         -fno-strict-aliasing
+else
+TARGET_thumb_CFLAGS := $(TARGET_arm_CFLAGS)
+endif
+
 
 # Set FORCE_ARM_DEBUGGING to "true" in your buildspec.mk
 # or in your environment to force a full arm build, even for

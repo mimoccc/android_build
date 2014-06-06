@@ -223,7 +223,7 @@ LOCAL_ARM_MODE := $(strip $(LOCAL_ARM_MODE))
 ifeq ($(TARGET_ARCH),arm)
 # We currently only support thumb-2
 # build in arm mode if thumb-1 is set
-ifeq ($(strip($(TARGET_ARCH_THUMB_VERSION)),1)
+ifeq ($(strip $(TARGET_ARCH_THUMB_VERSION)),1)
 LOCAL_ARM_MODE := arm
 endif
 

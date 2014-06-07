@@ -15,30 +15,36 @@ endif
 ifeq ($(strip $(TARGET_ARCH_VARIANT_FPU)),)
 TARGET_ARCH_VARIANT_FPU         := vfp
 endif
+
 ifeq ($(strip $(TARGET_ARCH_VARIANT_CPU)),)
-TARGET_ARCH_VARIANT_CPU         := arm1136jf-s
-elif  ($(strip $(TARGET_ARCH_VARIANT_CPU)),arm1176jzf-s)
-ARCH_ARM_HAVE_THUMB_SUPPORT     := false
-ARCH_ARM_HAVE_FAST_INTERWORKING := false
+	TARGET_ARCH_VARIANT_CPU         := arm1136jf-s
 endif
 
-# Note: Hard coding the 'tune' value here is probably not ideal,
-# and a better solution should be found in the future.
-#
 arch_variant_cflags := \
-    -mcpu=$(TARGET_ARCH_VARIANT_CPU) \
     -mfloat-abi=softfp \
+    -mcpu=$(TARGET_ARCH_VARIANT_CPU) \
     -mfpu=$(TARGET_ARCH_VARIANT_FPU) \
     -D__ARM_ARCH_5__ \
     -D__ARM_ARCH_5T__ \
     -D__ARM_ARCH_5E__ \
     -D__ARM_ARCH_5TE__
 
-arch_variant_cflags += \
-	-mtune=$(TARGET_ARCH_VARIANT_CPU) \
-	-msoft-float \
-    -D__ARM_ARCH_5__ \
-    -D__ARM_ARCH_6__ \
-    -D__ARM_ARCH_6J__ \
+
+ifeq ($(strip $(TARGET_BOARD_PLATFORM)),bcm2708)
+	# The RaspberryPi has BCM in the surfaceflinger
+	arch_variant_cflags += -DBCM_HARDWARE
+endif
+
+ifeq ($(strip $(TARGET_ARCH_VARIANT_CPU)),arm1176jzf-s)
+	
+	ARCH_ARM_HAVE_THUMB_SUPPORT     := false
+	ARCH_ARM_HAVE_FAST_INTERWORKING := false
+	
+	arch_variant_cflags += \
+		-mtune=$(TARGET_ARCH_VARIANT_CPU) \
+		-msoft-float \
+		-D__ARM_ARCH_6__ \
+		-D__ARM_ARCH_6J__ \
 
 
+endif

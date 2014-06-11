@@ -29,12 +29,6 @@ arch_variant_cflags := \
     -D__ARM_ARCH_5E__ \
     -D__ARM_ARCH_5TE__
 
-
-ifeq ($(strip $(TARGET_BOARD_PLATFORM)),bcm2708)
-	# The RaspberryPi has BCM in the surfaceflinger
-	arch_variant_cflags += -DBCM_HARDWARE
-endif
-
 ifeq ($(strip $(TARGET_ARCH_VARIANT_CPU)),arm1176jzf-s)
 	
 	ARCH_ARM_HAVE_THUMB_SUPPORT     := false
